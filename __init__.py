@@ -15,7 +15,7 @@ except ModuleNotFoundError as _error:
 
 
 class DiscordRichPresence(BackgroundTaskThread):
-    client_id = "822408423320453121"
+    client_id = "733382890725048364"
 
     def __init__(self):
         BackgroundTaskThread.__init__(self, "Running Discord Rich Presence", True)
