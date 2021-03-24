@@ -5,24 +5,27 @@ from binaryninja import BackgroundTaskThread
 from binaryninjaui import DockHandler
 
 try:
-    from pypresence import Presence
+    import pypresence as presence
 except ModuleNotFoundError as _error:
     if sys.platform in ["win32", "win64", "darwin"]:
         from pip._internal import main
 
         main(['install', '--quiet', 'pypresence==4.0.0'])
+    import pypresence as presence
 
 
 class DiscordRichPresence(BackgroundTaskThread):
-    client_id = "733382890725048364"
+    client_id = "822408423320453121"
 
     def __init__(self):
         BackgroundTaskThread.__init__(self, "Running Discord Rich Presence", True)
-        self.rpc = Presence(client_id=DiscordRichPresence.client_id)
+        
+        self.loop = asyncio.new_event_loop()
+        self.rpc = presence.Presence(client_id=DiscordRichPresence.client_id, loop=self.loop)
         self.active = True
 
     def run(self):
-        asyncio.set_event_loop(asyncio.new_event_loop())
+        asyncio.set_event_loop(self.loop)
         self.rpc.connect()
 
         dock_handler = DockHandler.getActiveDockHandler()
